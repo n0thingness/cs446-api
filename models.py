@@ -6,7 +6,7 @@ from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 
 # Represents the data base table for the users 
-class Users_DB(DB.Model):
+class User_DB(DB.Model):
     __tablename__ = 'users'
 
     id = DB.Column(DB.Integer, primary_key=True)

@@ -19,10 +19,10 @@ def hello():
 @auth.verify_password
 def verify_password(email_or_token, password):
 	# first try to authenticate by token
-	user = Users_DB.verify_auth_token(email_or_token)
+	user = User_DB.verify_auth_token(email_or_token)
 	if not user:
 		# try to authenticate with email/password
-		user = Users_DB.query.filter_by(email=email_or_token).first()
+		user = User_DB.query.filter_by(email=email_or_token).first()
 		if not user or not user.verify_password(password):
 			return False
 	g.user = user
@@ -40,9 +40,9 @@ def new_user():
 	password = request.json.get('password')
 	if email is None or password is None:
 		abort(400)    # missing arguments
-	if Users_DB.query.filter_by(email=email).first() is not None:
+	if User_DB.query.filter_by(email=email).first() is not None:
 		abort(400)    # existing user
-	user = Users_DB(email=email)
+	user = User_DB(email=email)
 	user.hash_password(password)
 	DB.session.add(user)
 	DB.session.commit()
@@ -54,7 +54,7 @@ def login_user():
 	password = request.json.get('password')
 	if email is None or password is None:
 		abort(400)    # missing arguments
-	user = Users_DB.query.filter_by(email=email).first()
+	user = User_DB.query.filter_by(email=email).first()
 	if user is None:
 		abort(400)    # user doesn't exist
 	if user.verify_password(password):
@@ -66,7 +66,7 @@ def login_user():
 	
 @APP.route('/api/v1/users/<int:id>')
 def get_user(id):
-	user = Users_DB.query.get(id)
+	user = User_DB.query.get(id)
 	if not user:
 		abort(400)
 	return jsonify({'email': user.email})
