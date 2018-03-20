@@ -1,0 +1,9 @@
+Flask==0.12.2
+flask-restful==0.3.5
+gunicorn==19.7.1
+psycopg2==2.7.4
+Flask_SQLAlchemy==2.3.2
+Flask_Migrate==2.1.1
+Flask-Script==2.0.6
+passlib==1.7.1
+flask-httpauth==3.2.3
