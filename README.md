@@ -26,4 +26,10 @@ First line is for initializing migrations folder (run once)
 
 Second line is for creating a new migration to update the db model (run when model is changed)
 
-Third line is for upgrading the db to the latest migration
+Third line is for upgrading the db to the latest migration (run when model is changed, after having created the new migration file)
+
+
+To run the server locally
+```
+python app.py
+```
