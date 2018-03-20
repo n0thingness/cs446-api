@@ -1,7 +1,9 @@
 # cs446-api
 
 Remember to install autoenv outside of your virtual env
+
 Create a .env file in root directory
+
 Add following info:
 
 ```
