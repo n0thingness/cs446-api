@@ -1,22 +1,23 @@
 import datetime
-from app import db
+from app import DB
 from flask import current_app
 from sqlalchemy.dialects.postgresql import JSON
 from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 
-class User(db.Model):
+# Represents the data base table for the users 
+class Users_DB(DB.Model):
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(254))
-    password_hash = db.Column(db.String(128))
-    name = db.Column(db.String(32))
-    surname = db.Column(db.String(32))
-    date_created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    id = DB.Column(DB.Integer, primary_key=True)
+    email = DB.Column(DB.String(254))
+    password_hash = DB.Column(DB.String(128))
+    name = DB.Column(DB.String(32))
+    surname = DB.Column(DB.String(32))
+    date_created = DB.Column(DB.DateTime, default=datetime.datetime.utcnow)
 
-    # result_all = db.Column(JSON)
-    # result_no_stop_words = db.Column(JSON)
+    # result_all = DB.Column(JSON)
+    # result_no_stop_words = DB.Column(JSON)
 
     # def __init__(self, name, surname, result_all, result_no_stop_words):
     def __init__(self, email):
