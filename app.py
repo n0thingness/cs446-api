@@ -2,7 +2,7 @@ import os
 from flask import Flask, abort, request, jsonify, g, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPBasicAuth
-from models import *
+from user_model import *
 
 APP = Flask(__name__)
 APP.config.from_object(os.environ['APP_SETTINGS'])
