@@ -34,10 +34,15 @@ class Location_DB(DB.Model):
         self._users_list.remove(user_id)
 
     def get_users_at_location_count(self, location_id):
-        userc = DB.session.query(location_id).get(_current_user_count)
+        userc = Location_DB.session.query(location_id).get(_current_user_count)
         return userc
 
     def get_all_users_at_location(self, location_id):
-        userl = DB.session.query(location_id).get(_users_list)
+        userl = Location_DB.session.query(location_id).get(_users_list)
         return userl
+
+    # def get_all_unmatched_users_at_location(self, location_id):
+    #     all_users = Location_DB.session.query(location_id).get(_users_list)
+    #     matched_users = User_DB.query.filter_by(is_matched=True).get()
+    #     return list(set(all_users) - set(matched_users)) 
 
