@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import JSON
 # from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 
 # Represents the data base table for the locations and related data 
-class User_DB(DB.Model):
+class Location_DB(DB.Model):
     __tablename__ = 'locations'
 
     _id = DB.Column(DB.Integer, primary_key=True) # google id, api returns location with id 
