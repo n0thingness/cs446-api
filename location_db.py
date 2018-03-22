@@ -29,25 +29,15 @@ class Location_DB(DB.Model):
         self._current_user_count += 1 # increment user count at location 
         self._users_list.append(user_id) # add user id to l of users at location
 
+    def remove_user_from_location(self, user_id):
+        self._current_user_count -= 1
+        self._users_list.remove(user_id)
 
-    # def hash_password(self, password):
-    #     self.password_hash = pwd_context.encrypt(password)
+    def get_users_at_location_count(self, location_id):
+        userc = DB.session.query(location_id).get(_current_user_count)
+        return userc
 
-    # def verify_password(self, password):
-    #     return pwd_context.verify(password, self.password_hash)
+    def get_all_users_at_location(self, location_id):
+        userl = DB.session.query(location_id).get(_users_list)
+        return userl
 
-    # def generate_auth_token(self, expiration = 600):
-    #     s = Serializer(current_app.config['SECRET_KEY'], expires_in = expiration)
-    #     return s.dumps({ 'id': self.id })
-
-    # @staticmethod
-    # def verify_auth_token(token):
-    #     s = Serializer(current_app.config['SECRET_KEY'])
-    #     try:
-    #         data = s.loads(token)
-    #     except SignatureExpired:
-    #         return None    # valid token, but expired
-    #     except BadSignature:
-    #         return None    # invalid token
-    #     user = User.query.get(data['id'])
-    #     return user
