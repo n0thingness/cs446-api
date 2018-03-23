@@ -3,13 +3,14 @@ from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
 from app import APP, DB
-from user_model import *
+from user_db import *
+from location_db import *
 
 
 APP.config.from_object(os.environ['APP_SETTINGS'])
 
 migrate = Migrate(APP, DB)
-manager = Manager(app)
+manager = Manager(APP)
 
 manager.add_command('DB', MigrateCommand)
 
