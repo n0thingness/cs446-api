@@ -2,7 +2,7 @@ import os
 from flask import Flask, abort, request, jsonify, g, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPBasicAuth
-from user_model import *
+from user_db import *
 
 APP = Flask(__name__)
 APP.config.from_object(os.environ['APP_SETTINGS'])
@@ -78,4 +78,4 @@ def get_resource():
 	return jsonify({'data': 'Hello, %s!' % g.user.email})
 
 if __name__ == "__main__":
-	APP.run(host='0.0.0.0', port=5000, debug=True) 
+	APP.run() #(host='0.0.0.0', port=5000, debug=True)
