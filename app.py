@@ -2,7 +2,7 @@ import os
 from flask import Flask, abort, request, jsonify, g, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPBasicAuth
-from user_db import *
+
 
 APP = Flask(__name__)
 APP.config.from_object(os.environ['APP_SETTINGS'])
@@ -11,6 +11,7 @@ APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 DB = SQLAlchemy(APP)
 auth = HTTPBasicAuth()
 
+from user_db import *
 
 @APP.route("/")
 def hello():
