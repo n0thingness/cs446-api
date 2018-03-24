@@ -55,7 +55,10 @@ def new_user():
 	user.hash_password(password)
 	DB.session.add(user)
 	DB.session.commit()
-	return (jsonify({'email': user.email}), 201, {'Location': url_for('get_user', id=user.id, _external=True)})
+	g.user = user
+	token = g.user.generate_auth_token()
+	return jsonify({ 'token': token.decode('ascii') })
+	# return (jsonify({'email': user.email}), 201, {'Location': url_for('get_user', id=user.id, _external=True)})
 
 @APP.route('/api/v1/users/login', methods=['POST'])
 def login_user():
