@@ -1,7 +1,7 @@
 import os
 from flask import Flask, abort, request, jsonify, g, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_httpauth import HTTPBasicAuth
+from flask_httpauth import HTTPTokenAuth
 
 
 APP = Flask(__name__)
@@ -9,7 +9,7 @@ APP.config.from_object(os.environ['APP_SETTINGS'])
 
 APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 DB = SQLAlchemy(APP)
-auth = HTTPBasicAuth()
+auth = HTTPTokenAuth(scheme='Token')
 
 from user_db import *
 
@@ -17,17 +17,25 @@ from user_db import *
 def hello():
 	return "<h1 style='color:blue'>Hello There!</h1>"
 
-@auth.verify_password
-def verify_password(email_or_token, password):
-	# first try to authenticate by token
-	user = User_DB.verify_auth_token(email_or_token)
-	if not user:
-		# try to authenticate with email/password
-		user = User_DB.query.filter_by(email=email_or_token).first()
-		if not user or not user.verify_password(password):
-			return False
-	g.user = user
-	return True
+# @auth.verify_password
+# def verify_password(email_or_token, password):
+# 	# first try to authenticate by token
+# 	user = User_DB.verify_auth_token(email_or_token)
+# 	if not user:
+# 		# try to authenticate with email/password
+# 		user = User_DB.query.filter_by(email=email_or_token).first()
+# 		if not user or not user.verify_password(password):
+# 			return False
+# 	g.user = user
+# 	return True
+
+@auth.verify_token
+def verify_token(token):
+    user = User_DB.verify_auth_token(token)
+    if not user:
+    	return False
+   	g.user = user
+    return True
 
 @APP.route('/api/v1/token')
 @auth.login_required
