@@ -31,11 +31,11 @@ def hello():
 
 @auth.verify_token
 def verify_token(token):
-    user = User_DB.verify_auth_token(token)
-    if not user:
-    	return False
-   	g.user = user
-    return True
+	user = User_DB.verify_auth_token(token)
+	if not user:
+		return False
+	g.user = user
+	return True
 
 @APP.route('/api/v1/token')
 @auth.login_required
