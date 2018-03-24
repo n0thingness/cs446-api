@@ -31,8 +31,6 @@ def hello():
 
 @auth.verify_token
 def verify_token(token):
-	print ('verify_token')
-	print (token)
 	user = User_DB.verify_auth_token(token)
 	if not user:
 		return False
