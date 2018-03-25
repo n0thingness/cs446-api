@@ -50,7 +50,7 @@ def new_user():
 	if email is None or password is None:
 		abort(400)    # missing arguments
 	if User_DB.query.filter_by(email=email).first() is not None:
-		abort(400)    # existing user
+		abort(409)    # existing user
 	user = User_DB(email=email)
 	user.hash_password(password)
 	DB.session.add(user)
