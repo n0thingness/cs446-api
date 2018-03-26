@@ -18,9 +18,9 @@ class Location_DB(DB.Model):
     rating = DB.Column(DB.Float)
 
     currentUserCount = DB.Column(DB.Integer) 
-    userList = [] # list to track the number of users at the location
+    # userList = [] # list to track the number of users at the location
 
-    def __init__(self, gid, name=None, address=None, phoneNumber=None, priceLevel=0, rating=0):
+    def __init__(self, gid="", name="", address="", phoneNumber="", priceLevel=-1, rating=-1):
         self.gid = gid 
         self.name = name
         self.address = address
