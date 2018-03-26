@@ -20,7 +20,7 @@ class User_DB(DB.Model):
     # Foreign Key creates a pointer to the locations table - google location id column
     checkin_location = DB.Column(DB.Integer, ForeignKey(locations.gid)) 
     # Foreign Key creates a pointer to the matched user
-    current_match = DB.Column(DB.Integer, ForeignKey(users.id))
+    current_match_id = DB.Column(DB.Integer, ForeignKey(users.id))
 
     # result_all = DB.Column(JSON)
     # result_no_stop_words = DB.Column(JSON)

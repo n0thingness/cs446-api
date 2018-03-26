@@ -136,6 +136,18 @@ def newLocation():
 def get_resource():
 	return jsonify({'data': 'Hello, %s!' % g.user.email})
 
+@APP.route('/api/v1/users/<int:id>/match')
+@auth.login_required
+def get_matched(id):
+	user = User_DB.query.get(id)
+	if not user:
+		abort(400)
+	curr_match_id = user.current_match_id
+	if curr_match is None: return None
+	matched_user = User_DB.query.get(curr_match)
+	return jsonify({'email': matched_user.email})
+
+
 
 
 if __name__ == "__main__":
