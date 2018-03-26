@@ -113,6 +113,15 @@ def location():
 			location = Location_DB(gid=gid, name=name, address=address, phoneNumber=phoneNumber, priceLevel=priceLevel, rating=rating)
 			DB.session.add(location)
 			DB.session.commit()
+			return jsonify(
+					id=location.id,
+					gid=location.gid,
+					name=location.name,
+					address=location.address,
+					phoneNumber=location.phoneNumber,
+					priceLevel=location.priceLevel,
+					rating=location.rating
+				)
 		else:
 			abort(409)
 	else:
