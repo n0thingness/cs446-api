@@ -2,6 +2,7 @@ import os
 from flask import Flask, abort, request, jsonify, g, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPTokenAuth
+import datetime
 
 
 APP = Flask(__name__)
@@ -147,7 +148,20 @@ def get_matched(id):
 	matched_user = User_DB.query.get(curr_match)
 	return jsonify({'email': matched_user.email})
 
-
+# checkin(post - param: location) - update last_checkin, foreignK to location
+@APP.route('/api/v1/users/<int:id>/<string:gid>/checkin', methods=['GET'])
+@auth.login_required
+def user_checkin(id, gid):
+	user = User_DB.query.get(id)
+	location = Location_DB.query.filter_by(gid=gid).first()
+	if location is None:
+		print("Unknown location!")
+		abort(400)
+	if not user: 
+		abort(400)
+	user.last_checkin = datetime.datetime.utcnow
+	user.checkin_location = gid 
+	
 
 
 if __name__ == "__main__":
