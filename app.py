@@ -12,6 +12,7 @@ DB = SQLAlchemy(APP)
 auth = HTTPTokenAuth(scheme='Token')
 
 from user_db import *
+from location_db import *
 
 @APP.route("/")
 def hello():
