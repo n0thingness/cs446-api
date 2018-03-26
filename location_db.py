@@ -9,18 +9,25 @@ from sqlalchemy.dialects.postgresql import JSON
 class Location_DB(DB.Model):
     __tablename__ = 'locations'
 
-    _location_id = DB.Column(DB.Integer, primary_key=True) # google id, api returns location with id 
-    _name = DB.Column(DB.String(32))
-    _address = DB.Column(DB.String(32))
-    _current_user_count = DB.Column(DB.Integer) 
-    _users_list = [] # list to track the number of users at the location
+    id = DB.Column(DB.Integer, primary_key=True)
+    gid = DB.Column(DB.String(255)) # google id, api returns location with id 
+    name = DB.Column(DB.String(127))
+    address = DB.Column(DB.String(127))
+    phoneNumber = DB.Column(DB.String(50))
+    priceLevel = DB.Column(DB.Integer)
+    rating = DB.Column(DB.Float)
 
-    # def __init__(self, name, surname, result_all, result_no_stop_words):
-    def __init__(self, location_id, name=None, address=None):
-        self._location_id = location_id 
-        self._name = name
+    currentUserCount = DB.Column(DB.Integer) 
+    userList = [] # list to track the number of users at the location
+
+    def __init__(self, gid, name=None, address=None, phoneNumber=None, priceLevel=0, rating=0):
+        self.gid = gid 
+        self.name = name
         self.address = address
-        self._current_user_count = 0
+        self.phoneNumber = phoneNumber
+        self.priceLevel = priceLevel
+        self.rating = rating
+        self.currentUserCount = 0
 
     def __repr__(self):
         return '<location id {}>'.format(self._location_id)

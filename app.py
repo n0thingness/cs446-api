@@ -83,11 +83,49 @@ def get_user(id):
 		abort(400)
 	return jsonify({'email': user.email})
 
+@APP.route('/api/v1/location', methods=['GET', 'POST'])
+@auth.login_required
+def location():
+	if (request.method == 'GET'):
+		gid = request.json.get('gid')
+		location = Location_DB.query.filter_by(gid=gid).first()
+		if location is not None:
+			return jsonify(
+					id=location.id,
+					gid=location.gid,
+					name=location.name,
+					address=location.address,
+					phoneNumber=location.phoneNumber,
+					priceLevel=location.priceLevel,
+					rating=location.rating
+				)
+		else:
+			abort(404)
+	elif (request.method == 'POST'):
+		gid = request.json.get('gid')
+		name = request.json.get('name')
+		address = request.json.get('address')
+		phoneNumber = request.json.get('phoneNumber')
+		priceLevel = request.json.get('priceLevel')
+		rating = request.json.get('rating')
+		location = Location_DB.query.filter_by(gid=gid).first()
+		if location is None:
+			location = Location_DB(gid=gid, name=name, address=address, phoneNumber=phoneNumber, priceLevel=priceLevel, rating=rating)
+			DB.session.add(location)
+			DB.session.commit()
+		else:
+			abort(409)
+	else:
+		abort(400)
+
+
 
 @APP.route('/api/v1/resource')
 @auth.login_required
 def get_resource():
 	return jsonify({'data': 'Hello, %s!' % g.user.email})
+
+
 
 if __name__ == "__main__":
 	APP.run() #(host='0.0.0.0', port=5000, debug=True)
