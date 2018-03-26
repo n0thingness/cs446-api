@@ -30,23 +30,23 @@ class Location_DB(DB.Model):
         self.currentUserCount = 0
 
     def __repr__(self):
-        return '<location id {}>'.format(self._location_id)
+        return '<location id {}>'.format(self.id)
 
-    def add_user_to_location(self, user_id):
-        self._current_user_count += 1 # increment user count at location 
-        self._users_list.append(user_id) # add user id to l of users at location
+    # def add_user_to_location(self, user_id):
+    #     self._current_user_count += 1 # increment user count at location 
+    #     self._users_list.append(user_id) # add user id to l of users at location
 
-    def remove_user_from_location(self, user_id):
-        self._current_user_count -= 1
-        self._users_list.remove(user_id)
+    # def remove_user_from_location(self, user_id):
+    #     self._current_user_count -= 1
+    #     self._users_list.remove(user_id)
 
-    def get_users_at_location_count(self, location_id):
-        userc = Location_DB.session.query(location_id).get(_current_user_count)
-        return userc
+    # def get_users_at_location_count(self, location_id):
+    #     userc = Location_DB.session.query(location_id).get(_current_user_count)
+    #     return userc
 
-    def get_all_users_at_location(self, location_id):
-        userl = Location_DB.session.query(location_id).get(_users_list)
-        return userl
+    # def get_all_users_at_location(self, location_id):
+    #     userl = Location_DB.session.query(location_id).get(_users_list)
+    #     return userl
 
     # def get_all_unmatched_users_at_location(self, location_id):
     #     all_users = Location_DB.session.query(location_id).get(_users_list)
