@@ -83,49 +83,50 @@ def get_user(id):
 		abort(400)
 	return jsonify({'email': user.email})
 
-@APP.route('/api/v1/location', methods=['GET', 'POST'])
+
+@APP.route('/api/v1/location/<string:gid>', methods=['GET'])
 @auth.login_required
-def location():
-	if (request.method == 'GET'):
-		gid = request.json.get('gid')
-		location = Location_DB.query.filter_by(gid=gid).first()
-		if location is not None:
-			return jsonify(
-					id=location.id,
-					gid=location.gid,
-					name=location.name,
-					address=location.address,
-					phoneNumber=location.phoneNumber,
-					priceLevel=location.priceLevel,
-					rating=location.rating
-				)
-		else:
-			abort(404)
-	elif (request.method == 'POST'):
-		gid = request.json.get('gid')
-		name = request.json.get('name')
-		address = request.json.get('address')
-		phoneNumber = request.json.get('phoneNumber')
-		priceLevel = request.json.get('priceLevel')
-		rating = request.json.get('rating')
-		location = Location_DB.query.filter_by(gid=gid).first()
-		if location is None:
-			location = Location_DB(gid=gid, name=name, address=address, phoneNumber=phoneNumber, priceLevel=priceLevel, rating=rating)
-			DB.session.add(location)
-			DB.session.commit()
-			return jsonify(
-					id=location.id,
-					gid=location.gid,
-					name=location.name,
-					address=location.address,
-					phoneNumber=location.phoneNumber,
-					priceLevel=location.priceLevel,
-					rating=location.rating
-				)
-		else:
-			abort(409)
+def getLocation():
+	location = Location_DB.query.filter_by(gid=gid).first()
+	if location is not None:
+		return jsonify(
+				id=location.id,
+				gid=location.gid,
+				name=location.name,
+				address=location.address,
+				phoneNumber=location.phoneNumber,
+				priceLevel=location.priceLevel,
+				rating=location.rating
+			)
 	else:
-		abort(400)
+		abort(404)
+
+
+@APP.route('/api/v1/location', methods=['POST'])
+@auth.login_required
+def newLocation():
+	gid = request.json.get('gid')
+	name = request.json.get('name')
+	address = request.json.get('address')
+	phoneNumber = request.json.get('phoneNumber')
+	priceLevel = request.json.get('priceLevel')
+	rating = request.json.get('rating')
+	location = Location_DB.query.filter_by(gid=gid).first()
+	if location is None:
+		location = Location_DB(gid=gid, name=name, address=address, phoneNumber=phoneNumber, priceLevel=priceLevel, rating=rating)
+		DB.session.add(location)
+		DB.session.commit()
+		return jsonify(
+				id=location.id,
+				gid=location.gid,
+				name=location.name,
+				address=location.address,
+				phoneNumber=location.phoneNumber,
+				priceLevel=location.priceLevel,
+				rating=location.rating
+			)
+	else:
+		abort(409)
 
 
 
