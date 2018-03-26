@@ -86,7 +86,7 @@ def get_user(id):
 
 @APP.route('/api/v1/location/<string:gid>', methods=['GET'])
 @auth.login_required
-def getLocation():
+def getLocation(gid):
 	location = Location_DB.query.filter_by(gid=gid).first()
 	if location is not None:
 		return jsonify(
