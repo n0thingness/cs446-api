@@ -199,7 +199,7 @@ def user_checkin(gid):
 	if location is None:
 		abort(404)
 	time_now = datetime.datetime.utcnow
-	g.user.lastCheckIn = time_now
+	g.user.lastCheckIn = datetime.datetime.utcnow
 	g.user.checkInLocation = None
 	print ("Before")
 	print (location.checkedInUsers)
