@@ -199,9 +199,9 @@ def user_checkin(gid):
 	if location is None:
 		abort(404)
 	time_now = datetime.datetime.utcnow
-	g.user.lastCheckIn = datetime.datetime.utcnow
-	g.user.checkInLocation = None
-	DB.session.commit()
+	# g.user.lastCheckIn = datetime.datetime.utcnow
+	# g.user.checkInLocation = None
+	# DB.session.commit()
 	print ("Before")
 	print (location.checkedInUsers)
 	for u in location.checkedInUsers:
