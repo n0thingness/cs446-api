@@ -192,7 +192,7 @@ def get_match():
 	# 		surname=matchedUser.surname,
 	# 	)
 
-@APP.route('/api/v1/location/<string:gid>/checkin', methods=['POST'])
+@APP.route('/api/v1/location/<string:gid>/checkin', methods=['GET'])
 @auth.login_required
 def user_checkin(gid):
 	location = Location_DB.query.filter_by(gid=gid).first()
@@ -200,9 +200,10 @@ def user_checkin(gid):
 		abort(404)
 	g.user.last_checkin = datetime.datetime.utcnow
 	location.checkedInUsers.append(g.user)
+	print (location.checkedInUsers)
 	DB.session.commit()
 	return jsonify(
-			result=True
+			data="True"
 		)
 
 
