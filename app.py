@@ -198,7 +198,7 @@ def user_checkin(gid):
 	location = Location_DB.query.filter_by(gid=gid).first()
 	if location is None:
 		abort(404)
-	time_now = datetime.datetime.utcnow
+	time_now = datetime.datetime.utcnow()
 	# g.user.lastCheckIn = datetime.datetime.utcnow
 	# g.user.checkInLocation = None
 	# DB.session.commit()
