@@ -137,19 +137,18 @@ def newLocation():
 def get_resource():
 	return jsonify({'data': 'Hello, %s!' % g.user.email})
 
-@APP.route('/api/v1/users/<int:id>/match')
+@APP.route('/api/v1/users/<int:id>/match', methods=['GET'])
 @auth.login_required
 def get_matched(id):
 	user = User_DB.query.get(id)
 	if not user:
 		abort(400)
 	curr_match_id = user.current_match_id
-	if curr_match is None: return None
-	matched_user = User_DB.query.get(curr_match)
+	if curr_match_id is None: return None
+	matched_user = User_DB.query.get(curr_match_id)
 	return jsonify({'email': matched_user.email})
 
-# checkin(post - param: location) - update last_checkin, foreignK to location
-@APP.route('/api/v1/users/<int:id>/<string:gid>/checkin', methods=['GET'])
+@APP.route('/api/v1/users/<int:id>/<string:gid>/checkin', methods=['POST'])
 @auth.login_required
 def user_checkin(id, gid):
 	user = User_DB.query.get(id)
