@@ -181,7 +181,18 @@ def get_resource():
 @APP.route('/api/v1/users/match', methods=['GET'])
 @auth.login_required
 def get_match():
-	return jsonify(result=False)
+	matched_id = -1
+	matched_name = ""
+	matched_surname = ""
+	if g.user.matchedUser is not None:
+		matched_id = g.user.matchedUser.id
+		matched_name = g.user.matchedUser.name
+		matched_surname = g.user.matchedUser.surname
+	return jsonify(
+		id=matched_id,
+		name=matched_name,
+		surname=matched_surname
+	)
 	# matchedUser = g.user.matchedUser
 	# if matchedUser is None:
 	# 	return jsonify(result=False)
@@ -201,6 +212,8 @@ def user_checkin(gid):
 	time_now = datetime.datetime.utcnow()
 	matched = None
 	matched_id = -1
+	matched_name = ""
+	matched_surname = ""
 	# g.user.lastCheckIn = datetime.datetime.utcnow
 	# g.user.checkInLocation = None
 	# DB.session.commit()
@@ -210,7 +223,7 @@ def user_checkin(gid):
 		if u.lastCheckIn is not None and time_now - u.lastCheckIn > datetime.timedelta(minutes=2):
 			print (time_now - u.lastCheckIn)
 			u.checkInLocation = None
-		elif u is not g.user and matched is None:
+		elif u is not g.user and matched is None: # need to check that user is not matched
 			u.matchedUser = g.user.id
 			g.user.matchedUser = u.id
 			matched = u
@@ -218,20 +231,19 @@ def user_checkin(gid):
 			print (matched)
 			print (matched.id)
 			matched_id = matched.id
+			matched_name = matched.name
+			matched_surname = matched.surname
 	if g.user not in location.checkedInUsers:
 		location.checkedInUsers.append(g.user)
 	print ("After")
 	print (location.checkedInUsers)
 	g.user.lastCheckIn = time_now
 	DB.session.commit()
-	if matched is None:
-		return jsonify(
-			data="False"
-		)
-	else:
-		return jsonify(
-			data=matched_id
-		)
+	return jsonify(
+		id=matched_id,
+		name=matched_name,
+		surname=matched_surname
+	)
 
 
 if __name__ == "__main__":
