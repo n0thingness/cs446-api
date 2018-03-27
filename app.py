@@ -184,10 +184,13 @@ def get_match():
 	matched_id = -1
 	matched_name = ""
 	matched_surname = ""
+	matched_user = None
 	if g.user.matchedUser is not None:
-		matched_id = g.user.matchedUser.id
-		matched_name = g.user.matchedUser.name
-		matched_surname = g.user.matchedUser.surname
+		matched_id = g.user.matchedUser
+		matched_user = User_DB.query.get(matched_id)
+		if matched_user is not None:
+			matched_name = g.user.matchedUser.name
+			matched_surname = g.user.matchedUser.surname
 	return jsonify(
 		id=matched_id,
 		name=matched_name,
