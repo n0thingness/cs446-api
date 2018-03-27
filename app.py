@@ -213,6 +213,8 @@ def user_checkin(gid):
 			u.matchedUser = g.user
 			g.user.matchedUser = u
 			matched = u
+			print ("matched")
+			print (matched)
 	if g.user not in location.checkedInUsers:
 		location.checkedInUsers.append(g.user)
 	print ("After")
