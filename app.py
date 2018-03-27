@@ -200,6 +200,7 @@ def user_checkin(gid):
 		abort(404)
 	time_now = datetime.datetime.utcnow()
 	matched = None
+	matched_id = -1
 	# g.user.lastCheckIn = datetime.datetime.utcnow
 	# g.user.checkInLocation = None
 	# DB.session.commit()
@@ -215,7 +216,8 @@ def user_checkin(gid):
 			matched = u
 			print ("matched")
 			print (matched)
-			print (matched.email)
+			print (matched.id)
+			matched_id = matched.id
 	if g.user not in location.checkedInUsers:
 		location.checkedInUsers.append(g.user)
 	print ("After")
@@ -228,7 +230,7 @@ def user_checkin(gid):
 		)
 	else:
 		return jsonify(
-			data=matched.email
+			data=matched_id
 		)
 
 
