@@ -2,6 +2,7 @@ import os
 from flask import Flask, abort, request, jsonify, g, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPTokenAuth
+import datetime
 
 
 APP = Flask(__name__)
@@ -129,13 +130,55 @@ def newLocation():
 	else:
 		abort(409)
 
-
+@APP.route('/api/v1/users/profile', methods=['POST'])
+@auth.login_required
+def updateProfile():
+	name = request.json.get('name')
+	surname = request.json.get('surname')
+	age = request.json.get('age')
+	location = request.json.get('location')
+	occupation = request.json.get('occupation')
+	interests = request.json.get('interests')
+	g.user.name = name
+	g.user.surname = surname
+	g.user.age = age
+	g.user.location = location
+	g.user.occupation = occupation
+	g.user.interests = interests
+	DB.session.commit()
+	return jsonify(result=True)
 
 @APP.route('/api/v1/resource')
 @auth.login_required
 def get_resource():
 	return jsonify({'data': 'Hello, %s!' % g.user.email})
 
+@APP.route('/api/v1/users/match', methods=['GET'])
+@auth.login_required
+def get_match():
+	return jsonify(result=False)
+	# matchedUser = g.user.matchedUser
+	# if matchedUser is None:
+	# 	return jsonify(result=False)
+	# return jsonify(
+	# 		result=True,
+	# 		id=matchedUser.id,
+	# 		name=matchedUser.name,
+	# 		surname=matchedUser.surname,
+	# 	)
+
+@APP.route('/api/v1/location/<string:gid>/checkin', methods=['POST'])
+@auth.login_required
+def user_checkin(gid):
+	location = Location_DB.query.filter_by(gid=gid).first()
+	if location is None:
+		abort(404)
+	g.user.last_checkin = datetime.datetime.utcnow
+	location.checkedInUsers.append(g.user)
+	DB.session.commit()
+	return jsonify(
+			result=True
+		)
 
 
 if __name__ == "__main__":

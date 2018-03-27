@@ -4,6 +4,7 @@ from flask import current_app
 from sqlalchemy.dialects.postgresql import JSON
 from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
+from sqlalchemy import ForeignKey
 
 # Represents the data base table for the users 
 class User_DB(DB.Model):
@@ -14,7 +15,17 @@ class User_DB(DB.Model):
     password_hash = DB.Column(DB.String(128))
     name = DB.Column(DB.String(32))
     surname = DB.Column(DB.String(32))
+    age = DB.Column(DB.Integer)
+    location= DB.Column(DB.String(32))
+    occupation = DB.Column(DB.String(32))
+    interests = DB.Column(DB.String(256))
     date_created = DB.Column(DB.DateTime, default=datetime.datetime.utcnow)
+    # defaults to creation time but should be changed each time user checks in 
+    lastCheckIn = DB.Column(DB.DateTime)
+    # Foreign Key creates a pointer to the locations table - google location id column
+    checkInLocation = DB.Column(DB.String(255), ForeignKey('locations.gid'))
+    # Foreign Key creates a pointer to the matched user
+    #current_match_id = DB.Column(DB.Integer, ForeignKey('users.id'))
 
     # result_all = DB.Column(JSON)
     # result_no_stop_words = DB.Column(JSON)

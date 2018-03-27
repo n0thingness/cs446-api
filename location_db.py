@@ -10,7 +10,7 @@ class Location_DB(DB.Model):
     __tablename__ = 'locations'
 
     id = DB.Column(DB.Integer, primary_key=True)
-    gid = DB.Column(DB.String(255)) # google id, api returns location with id 
+    gid = DB.Column(DB.String(255), unique=True) # google id, api returns location with id 
     name = DB.Column(DB.String(127))
     address = DB.Column(DB.String(127))
     phoneNumber = DB.Column(DB.String(50))
@@ -18,6 +18,7 @@ class Location_DB(DB.Model):
     rating = DB.Column(DB.Float)
 
     currentUserCount = DB.Column(DB.Integer) 
+    checkedInUsers = DB.relationship('User_DB', backref='currentLocation', lazy=True)
     # userList = [] # list to track the number of users at the location
 
     def __init__(self, gid="", name="", address="", phoneNumber="", priceLevel=-1, rating=-1):
