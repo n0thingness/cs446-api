@@ -78,12 +78,21 @@ def login_user():
 	abort(401)
 
 	
-@APP.route('/api/v1/users/<int:id>')
+@APP.route('/api/v1/users/<int:id>', methods=['GET'])
+@auth.login_required
 def get_user(id):
 	user = User_DB.query.get(id)
 	if not user:
-		abort(400)
-	return jsonify({'email': user.email})
+		abort(404)
+	return jsonify(
+			id=user.id,
+			name=user.name,
+			surname=user.surname,
+			age=user.age,
+			location=user.location,
+			occupation=user.occupation,
+			interests=user.interests
+		)
 
 
 @APP.route('/api/v1/location/<string:gid>', methods=['GET'])
