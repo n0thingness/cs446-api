@@ -17,9 +17,9 @@ class User_DB(DB.Model):
     surname = DB.Column(DB.String(32))
     date_created = DB.Column(DB.DateTime, default=datetime.datetime.utcnow)
     # defaults to creation time but should be changed each time user checks in 
-    last_checkin = DB.Column(DB.DateTime)
+    lastCheckIn = DB.Column(DB.DateTime)
     # Foreign Key creates a pointer to the locations table - google location id column
-    checkInlocation = DB.Column(DB.String(255), ForeignKey('locations.gid'))
+    checkInLocation = DB.Column(DB.String(255), ForeignKey('locations.gid'))
     # Foreign Key creates a pointer to the matched user
     #current_match_id = DB.Column(DB.Integer, ForeignKey('users.id'))
 

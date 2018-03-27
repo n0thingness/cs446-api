@@ -10,7 +10,7 @@ class Location_DB(DB.Model):
     __tablename__ = 'locations'
 
     id = DB.Column(DB.Integer, primary_key=True)
-    gid = DB.Column(DB.String(255)) # google id, api returns location with id 
+    gid = DB.Column(DB.String(255), unique=True) # google id, api returns location with id 
     name = DB.Column(DB.String(127))
     address = DB.Column(DB.String(127))
     phoneNumber = DB.Column(DB.String(50))

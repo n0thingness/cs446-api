@@ -158,7 +158,7 @@ def user_checkin(gid):
 	if location is None:
 		abort(404)
 	g.user.last_checkin = datetime.datetime.utcnow
-	g.user.checkin_location = location 
+	location.checkedInUsers.append(g.user)
 	DB.session.commit()
 	return jsonify(
 			result=True
