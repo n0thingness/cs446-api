@@ -198,12 +198,14 @@ def user_checkin(gid):
 	location = Location_DB.query.filter_by(gid=gid).first()
 	if location is None:
 		abort(404)
-	g.user.last_checkin = datetime.datetime.utcnow
+	now = datetime.datetime.utcnow
+	g.user.last_checkin = now
 	g.user.checkInLocation = None
 	print ("Before")
 	print (location.checkedInUsers)
-	# for u in location.checkedInUsers:
-	# 	if u.last_checkin > 
+	for u in location.checkedInUsers:
+		if now - u.last_checkin > datetime.timedelta(minutes=5):
+			u.checkInLocation = None
 	if g.user not in location.checkedInUsers:
 		location.checkedInUsers.append(g.user)
 	print ("After")
