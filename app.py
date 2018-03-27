@@ -209,7 +209,7 @@ def user_checkin(gid):
 		if u.lastCheckIn is not None and time_now - u.lastCheckIn > datetime.timedelta(minutes=1):
 			print (time_now - u.lastCheckIn)
 			u.checkInLocation = None
-		else if u is not g.user and matched is None:
+		elif u is not g.user and matched is None:
 			u.matchedUser = g.user
 			g.user.matchedUser = u
 			matched = u
