@@ -92,6 +92,7 @@ def get_user(id):
 			name=user.name,
 			surname=user.surname,
 			age=user.age,
+			gender=user.gender,
 			location=user.location,
 			occupation=user.occupation,
 			interests=user.interests
@@ -148,12 +149,14 @@ def updateProfile():
 	name = request.json.get('name')
 	surname = request.json.get('surname')
 	age = request.json.get('age')
+	gender = request.json.get('gender')
 	location = request.json.get('location')
 	occupation = request.json.get('occupation')
 	interests = request.json.get('interests')
 	g.user.name = name
 	g.user.surname = surname
 	g.user.age = age
+	g.user.gender = gender
 	g.user.location = location
 	g.user.occupation = occupation
 	g.user.interests = interests
@@ -164,6 +167,7 @@ def updateProfile():
 			name=g.user.name,
 			surname=g.user.surname,
 			age=g.user.age,
+			gender=g.user.gender,
 			location=g.user.location,
 			occupation=g.user.occupation,
 			interests=g.user.interests

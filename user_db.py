@@ -16,6 +16,7 @@ class User_DB(DB.Model):
     name = DB.Column(DB.String(32))
     surname = DB.Column(DB.String(32))
     age = DB.Column(DB.Integer)
+    gender = DB.Column(DB.String(32))
     location= DB.Column(DB.String(32))
     occupation = DB.Column(DB.String(32))
     interests = DB.Column(DB.String(256))
