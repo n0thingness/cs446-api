@@ -206,7 +206,7 @@ def user_checkin(gid):
 	print ("Before")
 	print (location.checkedInUsers)
 	for u in location.checkedInUsers:
-		if u.lastCheckIn is not None and time_now - u.lastCheckIn > datetime.timedelta(minutes=1):
+		if u.lastCheckIn is not None and time_now - u.lastCheckIn > datetime.timedelta(minutes=2):
 			print (time_now - u.lastCheckIn)
 			u.checkInLocation = None
 		elif u is not g.user and matched is None:
@@ -225,7 +225,7 @@ def user_checkin(gid):
 		)
 	else:
 		return jsonify(
-			data=g.user.matchedUser.email
+			data=matchedUser.email
 		)
 
 
