@@ -225,7 +225,7 @@ def user_checkin(gid):
 		)
 	else:
 		return jsonify(
-			data=matchedUser.email
+			data=matched.email
 		)
 
 
