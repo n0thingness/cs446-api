@@ -146,7 +146,16 @@ def updateProfile():
 	g.user.occupation = occupation
 	g.user.interests = interests
 	DB.session.commit()
-	return jsonify(result=True)
+	return jsonify(
+			id=g.user.id,
+			email=g.user.email,
+			name=g.user.name,
+			surname=g.user.surname,
+			age=g.user.age,
+			location=g.user.location,
+			occupation=g.user.occupation,
+			interests=g.user.interests
+		)
 
 @APP.route('/api/v1/resource')
 @auth.login_required
