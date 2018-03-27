@@ -211,6 +211,7 @@ def user_checkin(gid):
 		location.checkedInUsers.append(g.user)
 	print ("After")
 	print (location.checkedInUsers)
+	g.user.lastCheckIn = time_now
 	DB.session.commit()
 	return jsonify(
 			data="True"
