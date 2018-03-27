@@ -18,6 +18,7 @@ class Location_DB(DB.Model):
     rating = DB.Column(DB.Float)
 
     currentUserCount = DB.Column(DB.Integer) 
+    checkedInUsers = DB.relationship('User_DB', backref='currentLocation', lazy=True)
     # userList = [] # list to track the number of users at the location
 
     def __init__(self, gid="", name="", address="", phoneNumber="", priceLevel=-1, rating=-1):

@@ -137,30 +137,32 @@ def newLocation():
 def get_resource():
 	return jsonify({'data': 'Hello, %s!' % g.user.email})
 
-@APP.route('/api/v1/users/<int:id>/match', methods=['GET'])
+@APP.route('/api/v1/users/match', methods=['GET'])
 @auth.login_required
-def get_matched(id):
-	user = User_DB.query.get(id)
-	if not user:
-		abort(400)
-	curr_match_id = user.current_match_id
-	if curr_match_id is None: return None
-	matched_user = User_DB.query.get(curr_match_id)
-	return jsonify({'email': matched_user.email})
+def get_match():
+	return jsonify(result=False)
+	# matchedUser = g.user.matchedUser
+	# if matchedUser is None:
+	# 	return jsonify(result=False)
+	# return jsonify(
+	# 		result=True,
+	# 		id=matchedUser.id,
+	# 		name=matchedUser.name,
+	# 		surname=matchedUser.surname,
+	# 	)
 
-@APP.route('/api/v1/users/<int:id>/<string:gid>/checkin', methods=['POST'])
+@APP.route('/api/v1/location/<string:gid>/checkin', methods=['POST'])
 @auth.login_required
-def user_checkin(id, gid):
-	user = User_DB.query.get(id)
+def user_checkin(gid):
 	location = Location_DB.query.filter_by(gid=gid).first()
 	if location is None:
-		print("Unknown location!")
-		abort(400)
-	if not user: 
-		abort(400)
-	user.last_checkin = datetime.datetime.utcnow
-	user.checkin_location = gid 
-	
+		abort(404)
+	g.user.last_checkin = datetime.datetime.utcnow
+	g.user.checkin_location = location 
+	DB.session.commit()
+	return jsonify(
+			result=True
+		)
 
 
 if __name__ == "__main__":
