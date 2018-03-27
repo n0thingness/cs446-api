@@ -211,8 +211,8 @@ def user_checkin(gid):
 			print (time_now - u.lastCheckIn)
 			u.checkInLocation = None
 		elif u is not g.user and matched is None:
-			u.matchedUser = g.user
-			g.user.matchedUser = u
+			u.matchedUser = g.user.id
+			g.user.matchedUser = u.id
 			matched = u
 			print ("matched")
 			print (matched)
