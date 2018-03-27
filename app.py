@@ -199,24 +199,33 @@ def user_checkin(gid):
 	if location is None:
 		abort(404)
 	time_now = datetime.datetime.utcnow()
+	matched = None
 	# g.user.lastCheckIn = datetime.datetime.utcnow
 	# g.user.checkInLocation = None
 	# DB.session.commit()
 	print ("Before")
 	print (location.checkedInUsers)
 	for u in location.checkedInUsers:
-		if u.lastCheckIn is not None:
+		if u.lastCheckIn is not None and time_now - u.lastCheckIn > datetime.timedelta(minutes=1):
 			print (time_now - u.lastCheckIn)
-			if time_now - u.lastCheckIn > datetime.timedelta(minutes=1):
-				u.checkInLocation = None
+			u.checkInLocation = None
+		else if u is not g.user and matched is None:
+			u.matchedUser = g.user
+			g.user.matchedUser = u
+			matched = u
 	if g.user not in location.checkedInUsers:
 		location.checkedInUsers.append(g.user)
 	print ("After")
 	print (location.checkedInUsers)
 	g.user.lastCheckIn = time_now
 	DB.session.commit()
-	return jsonify(
-			data="True"
+	if matched is None:
+		return jsonify(
+			data="False"
+		)
+	else:
+		return jsonify(
+			data=g.user.matchedUser.email
 		)
 
 
