@@ -130,7 +130,23 @@ def newLocation():
 	else:
 		abort(409)
 
-
+@APP.route('/api/v1/users/profile', methods=['POST'])
+@auth.login_required
+def updateProfile():
+	name = request.json.get('name')
+	surname = request.json.get('surname')
+	age = request.json.get('age')
+	location = request.json.get('location')
+	occupation = request.json.get('occupation')
+	interests = request.json.get('interests')
+	g.user.name = name
+	g.user.surname = surname
+	g.user.age = age
+	g.user.location = location
+	g.user.occupation = occupation
+	g.user.interests = interests
+	DB.session.commit()
+	return jsonify(result=True)
 
 @APP.route('/api/v1/resource')
 @auth.login_required

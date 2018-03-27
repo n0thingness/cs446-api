@@ -15,6 +15,10 @@ class User_DB(DB.Model):
     password_hash = DB.Column(DB.String(128))
     name = DB.Column(DB.String(32))
     surname = DB.Column(DB.String(32))
+    age = DB.Column(DB.Integer)
+    location= DB.Column(DB.String(32))
+    occupation = DB.Column(DB.String(32))
+    interests = DB.Column(DB.String(256))
     date_created = DB.Column(DB.DateTime, default=datetime.datetime.utcnow)
     # defaults to creation time but should be changed each time user checks in 
     lastCheckIn = DB.Column(DB.DateTime)
