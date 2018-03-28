@@ -176,7 +176,9 @@ def updateProfile():
 @APP.route('/api/v1/resource')
 @auth.login_required
 def get_resource():
-	return jsonify({'data': 'Hello, %s!' % g.user.email})
+	if user.name is None:
+		return jsonify({'data': 'Hello, %s!' % g.user.email})
+	return jsonify({'data': 'Hello, %s!' % g.user.name})
 
 @APP.route('/api/v1/users/match', methods=['GET'])
 @auth.login_required
