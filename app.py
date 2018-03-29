@@ -187,6 +187,7 @@ def get_match():
 	matched_name = ""
 	matched_surname = ""
 	matched_user = None
+	
 	if g.user.matchedUser is not None:
 		matched_id = g.user.matchedUser
 		matched_user = User_DB.query.get(matched_id)
@@ -218,6 +219,28 @@ def get_interests(interests_str):
 			curr_interest = ""
 		else: curr_interest += c
 	return []
+
+'''
+Helper function to help user find a match! 
+param: user object that is looking for a match 
+'''
+def find_match(user):
+	interests_str = user.interests
+	user_interests = get_interests(interests_str)
+	occupation = user.occupation
+	# get all available users at location
+	all_users = User_DB.query.filter_by(checkInLocation=user.checkInLocation).first()
+	for u in all_users:
+		interests_str = u.interests 
+		u_interests = get_interests(interests_str)
+		if not set(user_interests).isdisjoint(u_interests):
+			# user and u share common interests
+			return u 
+		elif u.occupation == user.occupation: 
+			# user and u have the some occupation
+			return u
+		else:
+			return u 
 
 
 @APP.route('/api/v1/location/<string:gid>/checkin', methods=['GET'])
