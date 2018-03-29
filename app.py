@@ -208,6 +208,18 @@ def get_match():
 	# 		surname=matchedUser.surname,
 	# 	)
 
+
+def get_interests(interests_str):
+	interests_str = interests_str.replace(" ", "")
+	curr_interest, interests = "", []
+	for c in interests_str:
+		if c == ",":
+			interests.append(curr_interest)
+			curr_interest = ""
+		else: curr_interest += c
+	return []
+
+
 @APP.route('/api/v1/location/<string:gid>/checkin', methods=['GET'])
 @auth.login_required
 def user_checkin(gid):
