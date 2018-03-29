@@ -187,27 +187,22 @@ def get_match():
 	matched_name = ""
 	matched_surname = ""
 	matched_user = None
-	
+
+	if not g.user.matchedUser and find_match(g.user): 
+		g.user.matchedUser = find_match(g.user)
+		
 	if g.user.matchedUser is not None:
 		matched_id = g.user.matchedUser
 		matched_user = User_DB.query.get(matched_id)
 		if matched_user is not None:
 			matched_name = matched_user.name
 			matched_surname = matched_user.surname
+
 	return jsonify(
 		id=matched_id,
 		name=matched_name,
 		surname=matched_surname
 	)
-	# matchedUser = g.user.matchedUser
-	# if matchedUser is None:
-	# 	return jsonify(result=False)
-	# return jsonify(
-	# 		result=True,
-	# 		id=matchedUser.id,
-	# 		name=matchedUser.name,
-	# 		surname=matchedUser.surname,
-	# 	)
 
 
 def get_interests(interests_str):
@@ -218,7 +213,7 @@ def get_interests(interests_str):
 			interests.append(curr_interest)
 			curr_interest = ""
 		else: curr_interest += c
-	return []
+	return interests 
 
 '''
 Helper function to help user find a match! 
@@ -241,6 +236,7 @@ def find_match(user):
 			return u
 		else:
 			return u 
+	return None
 
 
 @APP.route('/api/v1/location/<string:gid>/checkin', methods=['GET'])
