@@ -208,6 +208,23 @@ def get_match():
 	# 		surname=matchedUser.surname,
 	# 	)
 
+@APP.route('/api/v1/users/match/clear', methods=['GET'])
+@auth.login_required
+def clear_match():
+	matched_user = None
+	if g.user.matchedUser is not None:
+		g.user.matchedUser = None
+		matched_user = User_DB.query.get(g.user.matchedUser)
+		if matched_user is not None:
+			matched_user.matchedUser = None
+	DB.session.commit()
+	return jsonify(
+		id=-1,
+		name="",
+		surname=""
+	)
+
+
 @APP.route('/api/v1/location/<string:gid>/checkin', methods=['GET'])
 @auth.login_required
 def user_checkin(gid):
