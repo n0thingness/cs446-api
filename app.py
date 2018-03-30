@@ -226,6 +226,29 @@ def clear_match():
 		surname=""
 	)
 
+@APP.route('/api/v1/users/match/message', methods=['POST'])
+@auth.login_required
+def set_match_message():
+	message = request.json.get('data')
+	matched_user = None
+	matched_id = -1
+	matched_name = ""
+	matched_surname = ""
+	matched_message = ""
+	if g.user.matchedUser is not None:
+		g.user.matchedMessage = message;
+		matched_id = g.user.matchedUser
+		matched_user = User_DB.query.get(matched_id)
+		if matched_user is not None:
+			matched_name = matched_user.name
+			matched_surname = matched_user.surname
+	DB.session.commit()
+	return jsonify(
+			id=matched_id,
+			name=matched_name,
+			surname=matched_surname
+		)
+
 
 @APP.route('/api/v1/location/<string:gid>/checkin', methods=['GET'])
 @auth.login_required

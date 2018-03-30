@@ -27,6 +27,7 @@ class User_DB(DB.Model):
     checkInLocation = DB.Column(DB.String(255), ForeignKey('locations.gid')) #user.currentLocation for actual location object
     # Foreign Key creates a pointer to the matched user
     matchedUser = DB.Column(DB.Integer, ForeignKey('users.id'))
+    matchedMessage = DB.Column(DB.String(256))
 
     # result_all = DB.Column(JSON)
     # result_no_stop_words = DB.Column(JSON)
