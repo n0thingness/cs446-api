@@ -212,10 +212,12 @@ def get_match():
 @auth.login_required
 def clear_match():
 	matched_user = None
+	matched_id = -1
 	if g.user.matchedUser is not None:
-		g.user.matchedUser = None
-		matched_user = User_DB.query.get(g.user.matchedUser)
+		matched_id = g.user.matchedUser
+		matched_user = User_DB.query.get(matched_id)
 		if matched_user is not None:
+			g.user.matchedUser = None
 			matched_user.matchedUser = None
 	DB.session.commit()
 	return jsonify(
@@ -242,7 +244,7 @@ def user_checkin(gid):
 	print ("Before")
 	print (location.checkedInUsers)
 	for u in location.checkedInUsers:
-		if u.lastCheckIn is not None and time_now - u.lastCheckIn > datetime.timedelta(minutes=2):
+		if u.lastCheckIn is not None and time_now - u.lastCheckIn > datetime.timedelta(minutes=15):
 			print (time_now - u.lastCheckIn)
 			u.checkInLocation = None
 		elif u is not g.user and matched is None: # need to check that user is not matched
