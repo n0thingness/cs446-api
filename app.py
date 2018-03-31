@@ -304,6 +304,9 @@ def user_checkin(gid):
 	# DB.session.commit()
 	print ("Before")
 	print (location.checkedInUsers)
+	g.user.matchedUser = None
+	g.user.matchedMessage = None
+	g.user.matchedTopics = None
 	for u in location.checkedInUsers:
 		if u.lastCheckIn is not None and time_now - u.lastCheckIn > datetime.timedelta(minutes=15):
 			print (time_now - u.lastCheckIn)
