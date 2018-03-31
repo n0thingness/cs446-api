@@ -21,12 +21,12 @@ def xstr(s):
 def common_interests(interests1, interests2):
 	interests_1 = [x.strip() for x in interests1.split(',')]
 	interests_2 = [x.strip() for x in interests2.split(',')]
-	print (interests_1)
-	print (interests_2)
+	# print (interests_1)
+	# print (interests_2)
 	common = list(set(interests_1).intersection(interests_2))
 	out = ','.join(map(str, common))
-	print (common)
-	print (out)
+	# print (common)
+	# print (out)
 	return out
 
 @APP.route("/")
@@ -317,7 +317,7 @@ def user_checkin(gid):
 			continue
 		if u is not g.user and u.matchedUser is None: # need to check that user is not matched
 			matched = u
-			matchedTopics = common
+			matched_topics = common
 			
 
 	for u in location.checkedInUsers:
