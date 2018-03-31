@@ -313,7 +313,7 @@ def user_checkin(gid):
 		if matched is not None:
 			break
 		common = common_interests(g.user.interests, u.interests)
-		if common is None:
+		if common is None or common is "":
 			continue
 		if u is not g.user and u.matchedUser is None: # need to check that user is not matched
 			matched = u
