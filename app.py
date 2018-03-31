@@ -18,6 +18,12 @@ from location_db import *
 def xstr(s):
     return '' if s is None else str(s)
 
+def common_interests(interests1, interests2):
+	interests_1 = [x.strip() for x in interests1.split(',')]
+	interests_2 = [x.strip() for x in interests2.split(',')]
+	common = list(set(interests_1).intersection(interests_2))
+	return ','.join(map(str, common))
+
 @APP.route("/")
 def hello():
 	return "<h1 style='color:blue'>Hello There!</h1>"
@@ -278,6 +284,7 @@ def user_checkin(gid):
 	matched_id = -1
 	matched_name = ""
 	matched_surname = ""
+	matched_topics = ""
 	# g.user.lastCheckIn = datetime.datetime.utcnow
 	# g.user.checkInLocation = None
 	# DB.session.commit()
@@ -287,16 +294,41 @@ def user_checkin(gid):
 		if u.lastCheckIn is not None and time_now - u.lastCheckIn > datetime.timedelta(minutes=15):
 			print (time_now - u.lastCheckIn)
 			u.checkInLocation = None
-		elif u is not g.user and matched is None: # need to check that user is not matched
-			u.matchedUser = g.user.id
-			g.user.matchedUser = u.id
+
+	for u in location.checkedInUsers:
+		if matched is not None:
+			break
+		common = common_interests(g.user.interests, u.interests)
+		if common is None:
+			continue
+		if u is not g.user and u.matchedUser is None: # need to check that user is not matched
 			matched = u
-			print ("matched")
-			print (matched)
-			print (matched.id)
-			matched_id = matched.id
-			matched_name = matched.name
-			matched_surname = matched.surname
+			matchedTopics = common
+			
+
+	for u in location.checkedInUsers:
+		if matched is not None:
+			break
+		if u is not g.user and u.matchedUser is None and u.occupation == g.user.occupation:
+			matched = u
+			matched_topics = g.user.occupation
+
+	for u in location.checkedInUsers:
+		if matched is not None:
+			break
+		if u is not g.user and u.matchedUser is None:
+			matched = u
+
+	if matched is not None:
+		matched.matchedUser = g.user.id
+		g.user.matchedUser = matched.id
+		if matched_topics is not "":
+			g.user.matchedTopics = matched_topics
+			matched.matchedTopics = matched_topics
+		matched_id = matched.id
+		matched_name = matched.name
+		matched_surname = matched.surname
+
 	if g.user not in location.checkedInUsers:
 		location.checkedInUsers.append(g.user)
 	print ("After")
@@ -309,6 +341,7 @@ def user_checkin(gid):
 		surname=matched_surname,
 		selfMessage="",
 		otherMessage="",
+		topics=matched_topics,
 	)
 
 
