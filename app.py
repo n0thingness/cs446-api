@@ -15,6 +15,9 @@ auth = HTTPTokenAuth(scheme='Token')
 from user_db import *
 from location_db import *
 
+def xstr(s):
+    return '' if s is None else str(s)
+
 @APP.route("/")
 def hello():
 	return "<h1 style='color:blue'>Hello There!</h1>"
@@ -187,16 +190,22 @@ def get_match():
 	matched_name = ""
 	matched_surname = ""
 	matched_user = None
+	self_message = "";
+	other_message = "";
 	if g.user.matchedUser is not None:
 		matched_id = g.user.matchedUser
 		matched_user = User_DB.query.get(matched_id)
+		self_message = xstr(g.user.matchedMessage)
 		if matched_user is not None:
 			matched_name = matched_user.name
 			matched_surname = matched_user.surname
+			other_message = xstr(matched_user.matchedMessage)
 	return jsonify(
 		id=matched_id,
 		name=matched_name,
-		surname=matched_surname
+		surname=matched_surname,
+		selfMessage=self_message,
+		otherMessage=other_message,
 	)
 	# matchedUser = g.user.matchedUser
 	# if matchedUser is None:
@@ -218,12 +227,16 @@ def clear_match():
 		matched_user = User_DB.query.get(matched_id)
 		if matched_user is not None:
 			g.user.matchedUser = None
+			g.user.matchedMessage = None
 			matched_user.matchedUser = None
+			matched_user.matchedMessage = None
 	DB.session.commit()
 	return jsonify(
 		id=-1,
 		name="",
-		surname=""
+		surname="",
+		selfMessage="",
+		otherMessage=""
 	)
 
 @APP.route('/api/v1/users/match/message', methods=['POST'])
@@ -235,18 +248,22 @@ def set_match_message():
 	matched_name = ""
 	matched_surname = ""
 	matched_message = ""
+	other_message = ""
 	if g.user.matchedUser is not None:
-		g.user.matchedMessage = message;
+		g.user.matchedMessage = xstr(message);
 		matched_id = g.user.matchedUser
 		matched_user = User_DB.query.get(matched_id)
 		if matched_user is not None:
 			matched_name = matched_user.name
 			matched_surname = matched_user.surname
+			other_message = xstr(matched_user.matchedMessage)
 	DB.session.commit()
 	return jsonify(
 			id=matched_id,
 			name=matched_name,
-			surname=matched_surname
+			surname=matched_surname,
+			selfMessage=g.user.matchedMessage,
+			otherMessage=other_message
 		)
 
 
@@ -289,7 +306,9 @@ def user_checkin(gid):
 	return jsonify(
 		id=matched_id,
 		name=matched_name,
-		surname=matched_surname
+		surname=matched_surname,
+		selfMessage="",
+		otherMessage="",
 	)
 
 
