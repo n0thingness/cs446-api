@@ -198,10 +198,12 @@ def get_match():
 	matched_user = None
 	self_message = "";
 	other_message = "";
+	matched_topics = ""
 	if g.user.matchedUser is not None:
 		matched_id = g.user.matchedUser
 		matched_user = User_DB.query.get(matched_id)
 		self_message = xstr(g.user.matchedMessage)
+		matched_topics = xstr(g.user.matchedTopics)
 		if matched_user is not None:
 			matched_name = matched_user.name
 			matched_surname = matched_user.surname
@@ -212,6 +214,7 @@ def get_match():
 		surname=matched_surname,
 		selfMessage=self_message,
 		otherMessage=other_message,
+		topics=matched_topics
 	)
 	# matchedUser = g.user.matchedUser
 	# if matchedUser is None:
@@ -234,15 +237,18 @@ def clear_match():
 		if matched_user is not None:
 			g.user.matchedUser = None
 			g.user.matchedMessage = None
+			g.user.matchedTopics = None
 			matched_user.matchedUser = None
 			matched_user.matchedMessage = None
+			matched_user.matchedTopics = None
 	DB.session.commit()
 	return jsonify(
 		id=-1,
 		name="",
 		surname="",
 		selfMessage="",
-		otherMessage=""
+		otherMessage="",
+		topics=""
 	)
 
 @APP.route('/api/v1/users/match/message', methods=['POST'])
@@ -255,10 +261,12 @@ def set_match_message():
 	matched_surname = ""
 	matched_message = ""
 	other_message = ""
+	matched_topics = ""
 	if g.user.matchedUser is not None:
 		g.user.matchedMessage = xstr(message);
 		matched_id = g.user.matchedUser
 		matched_user = User_DB.query.get(matched_id)
+		matched_topics = g.user.matchedTopics
 		if matched_user is not None:
 			matched_name = matched_user.name
 			matched_surname = matched_user.surname
@@ -269,7 +277,8 @@ def set_match_message():
 			name=matched_name,
 			surname=matched_surname,
 			selfMessage=g.user.matchedMessage,
-			otherMessage=other_message
+			otherMessage=other_message,
+			topics=matched_topics
 		)
 
 
