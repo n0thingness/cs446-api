@@ -194,6 +194,43 @@ def get_resource():
 		return jsonify({'data': 'Hello, %s!' % g.user.email})
 	return jsonify({'data': 'Hello, %s!' % g.user.name})
 
+'''
+Helper function used by find_match to get a list of interests
+'''
+def get_interests(interests_str):
+	interests_str = interests_str.replace(" ", "")
+	curr_interest, interests = "", []
+	for c in interests_str:
+		if c == ",":
+			interests.append(curr_interest)
+			curr_interest = ""
+		else: curr_interest += c
+	return interests 
+
+'''
+Helper function to help user find a match! 
+param: user object that is looking for a match 
+'''
+def find_match(user):
+	interests_str = user.interests
+	user_interests = get_interests(interests_str)
+	occupation = user.occupation
+	# get all available users at location
+	all_users = User_DB.query.filter_by(checkInLocation=user.checkInLocation).first()
+	for u in all_users:
+		interests_str = u.interests 
+		u_interests = get_interests(interests_str)
+		if not set(user_interests).isdisjoint(u_interests):
+			# user and u share common interests
+			return u 
+		elif u.occupation == user.occupation: 
+			# user and u have the some occupation
+			return u
+		else:
+			return u 
+	return None
+
+
 @APP.route('/api/v1/users/match', methods=['GET'])
 @auth.login_required
 def get_match():
