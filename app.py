@@ -194,38 +194,9 @@ def get_resource():
 		return jsonify({'data': 'Hello, %s!' % g.user.email})
 	return jsonify({'data': 'Hello, %s!' % g.user.name})
 
-@APP.route('/api/v1/users/match', methods=['GET'])
-@auth.login_required
-def get_match():
-	matched_id = -1
-	matched_name = ""
-	matched_surname = ""
-	matched_user = None
-
-	self_message = "";
-	other_message = "";
-	matched_topics = ""
-	
-  if g.user.matchedUser is not None:
-		matched_id = g.user.matchedUser
-		matched_user = User_DB.query.get(matched_id)
-		self_message = xstr(g.user.matchedMessage)
-		matched_topics = xstr(g.user.matchedTopics)
-		if matched_user is not None:
-			matched_name = matched_user.name
-			matched_surname = matched_user.surname
-			other_message = xstr(matched_user.matchedMessage)
-
-  return jsonify(
-		id=matched_id,
-		name=matched_name,
-		surname=matched_surname,
-		selfMessage=self_message,
-		otherMessage=other_message,
-		topics=matched_topics
-	)
-
-
+'''
+Helper function used by find_match to get a list of interests
+'''
 def get_interests(interests_str):
 	interests_str = interests_str.replace(" ", "")
 	curr_interest, interests = "", []
@@ -259,6 +230,43 @@ def find_match(user):
 			return u 
 	return None
 
+
+@APP.route('/api/v1/users/match', methods=['GET'])
+@auth.login_required
+def get_match():
+	matched_id = -1
+	matched_name = ""
+	matched_surname = ""
+	matched_user = None
+	self_message = "";
+	other_message = "";
+	matched_topics = ""
+	if g.user.matchedUser is not None:
+		matched_id = g.user.matchedUser
+		matched_user = User_DB.query.get(matched_id)
+		self_message = xstr(g.user.matchedMessage)
+		matched_topics = xstr(g.user.matchedTopics)
+		if matched_user is not None:
+			matched_name = matched_user.name
+			matched_surname = matched_user.surname
+			other_message = xstr(matched_user.matchedMessage)
+	return jsonify(
+		id=matched_id,
+		name=matched_name,
+		surname=matched_surname,
+		selfMessage=self_message,
+		otherMessage=other_message,
+		topics=matched_topics
+	)
+	# matchedUser = g.user.matchedUser
+	# if matchedUser is None:
+	# 	return jsonify(result=False)
+	# return jsonify(
+	# 		result=True,
+	# 		id=matchedUser.id,
+	# 		name=matchedUser.name,
+	# 		surname=matchedUser.surname,
+	# 	)
 
 @APP.route('/api/v1/users/match/clear', methods=['GET'])
 @auth.login_required
