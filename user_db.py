@@ -24,9 +24,11 @@ class User_DB(DB.Model):
     # defaults to creation time but should be changed each time user checks in 
     lastCheckIn = DB.Column(DB.DateTime)
     # Foreign Key creates a pointer to the locations table - google location id column
-    checkInLocation = DB.Column(DB.String(255), ForeignKey('locations.gid'))
+    checkInLocation = DB.Column(DB.String(255), ForeignKey('locations.gid')) #user.currentLocation for actual location object
     # Foreign Key creates a pointer to the matched user
     matchedUser = DB.Column(DB.Integer, ForeignKey('users.id'))
+    matchedMessage = DB.Column(DB.String(256))
+    matchedTopics = DB.Column(DB.String(128))
 
     # result_all = DB.Column(JSON)
     # result_no_stop_words = DB.Column(JSON)
